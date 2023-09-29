@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'rdosgroup/gpt-translate',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'fac7bde774ebd6b464834031c557d9dcbf6bdcf9',
         'type' => 'laravel-package',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -316,6 +316,15 @@
                 0 => 'v10.16.1',
             ),
         ),
+        'kkomelin/laravel-translatable-string-exporter' => array(
+            'pretty_version' => '1.21.0',
+            'version' => '1.21.0.0',
+            'reference' => '51e6575223c345be359f5387ecaaf6bb7fc1de3d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../kkomelin/laravel-translatable-string-exporter',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'laravel/framework' => array(
             'pretty_version' => 'v10.16.1',
             'version' => '10.16.1.0',
@@ -529,8 +538,8 @@
         'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-factory' => array(
@@ -545,8 +554,8 @@
         'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-message' => array(
@@ -561,8 +570,8 @@
         'psr/http-message-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/log' => array(
@@ -624,9 +633,9 @@
             'dev_requirement' => false,
         ),
         'rdosgroup/gpt-translate' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'fac7bde774ebd6b464834031c557d9dcbf6bdcf9',
             'type' => 'laravel-package',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

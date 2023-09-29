@@ -109,6 +109,10 @@ class ComposerStaticInitd425ff81b51165a3587714bd01d313a0
             'League\\CommonMark\\' => 18,
             'Laravel\\SerializableClosure\\' => 28,
         ),
+        'K' => 
+        array (
+            'KKomelin\\TranslatableStringExporter\\' => 36,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -300,8 +304,8 @@ class ComposerStaticInitd425ff81b51165a3587714bd01d313a0
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -354,6 +358,10 @@ class ComposerStaticInitd425ff81b51165a3587714bd01d313a0
         'Laravel\\SerializableClosure\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
+        ),
+        'KKomelin\\TranslatableStringExporter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kkomelin/laravel-translatable-string-exporter/src',
         ),
         'Illuminate\\Support\\' => 
         array (

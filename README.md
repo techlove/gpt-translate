@@ -29,9 +29,15 @@ You need to publish the `openai.php` configuration file:
 php artisan vendor:publish
 ```
 
-
 **Environment Configuration**  
 Add the `OPENAI_API_KEY` and `OPENAI_ORGANIZATION` variables to your `.env` file with the details from your OpenAI account.
+
+
+**Fetch All Translatable and Translate**
+As shown, this command extracts all translatable strings into a `lang/en.json`, then translate them using ChatGPT into a new file `lang/sv.json` 
+```bash
+php aritsan translate:extract --origin=en --lang=sv --model=gpt-3.5-turbo
+```
 
 **Generate Base Translation File**  
 If you don’t already have a base translation file, generate it using:
