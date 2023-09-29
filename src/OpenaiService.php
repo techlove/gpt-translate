@@ -6,7 +6,7 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class OpenaiService
 {
-    public function translate_file($path = '.', $origin = 'en', $lang = 'es', $context = '', $model = "gpt-3.5-turbo")
+    public function translate_file($path = '.', $origin = 'en', $lang = 'sv', $context = '', $model = "gpt-3.5-turbo")
     {
         // get file from original content
         $file_origin = $path . "/$origin.json";
@@ -42,7 +42,7 @@ class OpenaiService
         return file_put_contents($file, $json);
     }
 
-    public function translate_string($string = '', $origin = 'en', $lang = 'es', $context = '', $model = "gpt-3.5-turbo")
+    public function translate_string($string = '', $origin = 'en', $lang = 'sv', $context = '', $model = "gpt-3.5-turbo")
     {
         try {
             $result = OpenAI::chat()->create([
