@@ -24,7 +24,7 @@ class OpenaiService
         // if file path does not exist, create it
         if (!file_exists($file)) {
             // verify if directory exists
-            if (!file_exists(dirname($file))){
+            if (!file_exists(dirname($file))) {
                 // if directory does not exist, create it
                 mkdir(dirname($file), 0777, true);
             } else {
@@ -55,7 +55,6 @@ class OpenaiService
             if ($result->choices && count($result->choices) > 0 && $result->choices[0]->message) {
                 $translation = $result->choices[0]->message->content ?? $string;
                 return $this->sync_vars($string, $translation);
-
             } else {
                 return $string;
             }
@@ -66,19 +65,37 @@ class OpenaiService
 
     public function prompt_system($context = '')
     {
-        if($context != '') {
+        if ($context != '') {
             return "You are a translator. Your job is to translate the following text into the specified language, using the given context: $context.";
         } else {
             return "You are a translator. Your job is to translate the following text to the language specified in the prompt.";
         }
     }
 
-    public function prompt_header($origin = 'en', $lang = 'es')
+    public function prompt_header($origin = 'en', $lang = 'sv')
     {
         $str_origin = "english";
         switch ($origin) {
             case 'en':
                 $str_origin = "english";
+                break;
+            case 'sv':
+                $str_origin = "swedish";
+                break;
+            case 'da':
+                $str_origin = "danish";
+                break;
+            case 'no':
+                $str_origin = "norwegian";
+                break;
+            case 'fi':
+                $str_origin = "finnish";
+                break;
+            case 'nl':
+                $str_origin = "dutch";
+                break;
+            case 'pl':
+                $str_origin = "polish";
                 break;
             case 'es':
                 $str_origin = "spanish";
@@ -104,6 +121,24 @@ class OpenaiService
             case 'en':
                 $str_origin = "english";
                 break;
+            case 'sv':
+                $str_origin = "swedish";
+                break;
+            case 'da':
+                $str_origin = "danish";
+                break;
+            case 'no':
+                $str_origin = "norwegian";
+                break;
+            case 'fi':
+                $str_origin = "finnish";
+                break;
+            case 'nl':
+                $str_origin = "dutch";
+                break;
+            case 'pl':
+                $str_origin = "polish";
+                break;
             case 'es':
                 $str_lang = "spanish";
                 break;
@@ -126,7 +161,8 @@ class OpenaiService
         return "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details. Importantly, any word prefixed with the symbol ':' should remain unchanged";
     }
 
-    public function sync_vars($str1, $str2) {
+    public function sync_vars($str1, $str2)
+    {
 
         // find all variables with subfix :
         preg_match_all('/:(\w+)/', $str1, $matches);
@@ -139,5 +175,4 @@ class OpenaiService
         // return new string with replaced variables
         return $str2;
     }
-
 }
