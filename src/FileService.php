@@ -4,7 +4,6 @@ namespace Rdosgroup\GptTranslate;
 
 class FileService
 {
-
     /**
      * Save array of strings into a file with json format on a given path
      */
@@ -16,7 +15,7 @@ class FileService
         // if file path does not exist, create it
         if (!file_exists($file)) {
             // verify if directory exists
-            if (!file_exists(dirname($file))){
+            if (!file_exists(dirname($file))) {
                 // if directory does not exist, create it
                 mkdir(dirname($file), 0777, true);
             } else {
@@ -127,13 +126,15 @@ class FileService
         $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "vue"));
         $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "js"));
         $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "ts"));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "tsx"));
         return $files;
     }
 
     /**
      * List all files in a directory by extension
      */
-    public function get_files_in_directory_by_extension($directory, $extension) {
+    public function get_files_in_directory_by_extension($directory, $extension)
+    {
         $files = [];
         // check if extension starts with a dot
         $extension = ltrim($extension, '.');
