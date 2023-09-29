@@ -28,19 +28,19 @@ class TranslateExtract extends Command
      */
     public function handle()
     {
-        $this->info('Creating translation file for ' . $this->option('lang') . ' at ' . Carbon::now()->toDateTimeString());
-        $this->info('Processing... Please wait.');
+        info('Creating translation file for ' . $this->option('lang') . ' at ' . Carbon::now()->toDateTimeString());
+        info('Processing... Please wait.');
         try {
             $this->call('translatable:export en');
-            $this->info('Translation file created successfully at ' . Carbon::now()->toDateTimeString());
+            info('Translation file created successfully at ' . Carbon::now()->toDateTimeString());
 
-            $this->info('Starting translation at ' . Carbon::now()->toDateTimeString());
+            info('Starting translation at ' . Carbon::now()->toDateTimeString());
             $this->call("translate:lang", [
                 '--model' => $this->option('model'),
                 '--lang' => $this->option('lang'),
                 '--origin' => $this->option('origin')
             ]);
-            $this->info('Translation finished successfully at ' . Carbon::now()->toDateTimeString());
+            info('Translation finished successfully at ' . Carbon::now()->toDateTimeString());
         } catch (\Throwable $th) {
             $this->stopSpinner();
             $this->error($th->getMessage());
