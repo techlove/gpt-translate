@@ -2,6 +2,7 @@
 
 namespace Rdosgroup\GptTranslate\Console;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class TranslateExtract extends Command
@@ -27,8 +28,22 @@ class TranslateExtract extends Command
      */
     public function handle()
     {
-        $this->call('translatable:export en');
+        $this->info('Creating translation file for ' . $this->option('lang') . ' at ' . Carbon::now()->toDateTimeString());
+        $this->info('Processing... Please wait.');
+        try {
+            $this->call('translatable:export en');
+            $this->info('Translation file created successfully at ' . Carbon::now()->toDateTimeString());
 
-        $this->call('translate:lang {--origin=en} {--lang=sv} {--model=gpt-3.5-turbo}');
+            $this->info('Starting translation at ' . Carbon::now()->toDateTimeString());
+            $this->call("translate:lang", [
+                '--model' => $this->option('model'),
+                '--lang' => $this->option('lang'),
+                '--origin' => $this->option('origin')
+            ]);
+            $this->info('Translation finished successfully at ' . Carbon::now()->toDateTimeString());
+        } catch (\Throwable $th) {
+            $this->stopSpinner();
+            $this->error($th->getMessage());
+        }
     }
 }

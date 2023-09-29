@@ -34,7 +34,8 @@ Add the `OPENAI_API_KEY` and `OPENAI_ORGANIZATION` variables to your `.env` file
 
 
 **Fetch All Translatable and Translate**
-As shown, this command extracts all translatable strings into a `lang/en.json`, then translate them using ChatGPT into a new file `lang/sv.json` 
+As shown, this command extracts all translatable strings into a `lang/en.json`, then translate them using ChatGPT into a new file `lang/sv.json`.
+These values are used as default and can therefor be left out of the command:
 ```bash
 php aritsan translate:extract --origin=en --lang=sv --model=gpt-3.5-turbo
 ```

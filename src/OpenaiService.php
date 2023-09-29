@@ -119,25 +119,25 @@ class OpenaiService
         $str_lang = "english";
         switch ($lang) {
             case 'en':
-                $str_origin = "english";
+                $str_lang = "english";
                 break;
             case 'sv':
-                $str_origin = "swedish";
+                $str_lang = "swedish";
                 break;
             case 'da':
-                $str_origin = "danish";
+                $str_lang = "danish";
                 break;
             case 'no':
-                $str_origin = "norwegian";
+                $str_lang = "norwegian";
                 break;
             case 'fi':
-                $str_origin = "finnish";
+                $str_lang = "finnish";
                 break;
             case 'nl':
-                $str_origin = "dutch";
+                $str_lang = "dutch";
                 break;
             case 'pl':
-                $str_origin = "polish";
+                $str_lang = "polish";
                 break;
             case 'es':
                 $str_lang = "spanish";
