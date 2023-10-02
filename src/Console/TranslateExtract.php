@@ -2,8 +2,10 @@
 
 namespace Rdosgroup\GptTranslate\Console;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
+
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\spin;
 
 class TranslateExtract extends Command
 {
@@ -28,22 +30,17 @@ class TranslateExtract extends Command
      */
     public function handle()
     {
-        info('Creating translation file for ' . $this->option('lang') . ' at ' . Carbon::now()->toDateTimeString());
-        info('Processing... Please wait.');
-        try {
-            $this->call('translatable:export en');
-            info('Translation file created successfully at ' . Carbon::now()->toDateTimeString());
-
-            info('Starting translation at ' . Carbon::now()->toDateTimeString());
-            $this->call("translate:lang", [
-                '--model' => $this->option('model'),
-                '--lang' => $this->option('lang'),
-                '--origin' => $this->option('origin')
+        spin(function () {
+            $this->call('translatable:export', [
+                'lang' => $this->option('origin'),
             ]);
-            info('Translation finished successfully at ' . Carbon::now()->toDateTimeString());
-        } catch (\Throwable $th) {
-            $this->stopSpinner();
-            $this->error($th->getMessage());
-        }
+
+            $this->call("translate:lang", [
+                '--origin' => $this->option('origin'),
+                '--lang' => $this->option('lang'),
+                '--model' => $this->option('model'),
+            ]);
+        });
+        info("Strings translated successfully to lang/{$this->option('lang')}.json");
     }
 }

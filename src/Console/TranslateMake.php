@@ -2,9 +2,11 @@
 
 namespace Rdosgroup\GptTranslate\Console;
 
-
 use Illuminate\Console\Command;
 use Rdosgroup\GptTranslate\FileService;
+
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\spin;
 
 class TranslateMake extends Command
 {
@@ -29,12 +31,11 @@ class TranslateMake extends Command
      */
     public function handle()
     {
-        try {
+
+        spin(function () {
             $service = new FileService();
             $service->strings_file($this->option('lang') ?? "en", base_path("lang"));
-            $this->info("File created successfully");
-        } catch (\Throwable $th) {
-            $this->error($th->getMessage());
-        }
+        }, "Creating {$this->option('lang')}.json file in lang/ directory...");
+        info("File created successfully");
     }
 }

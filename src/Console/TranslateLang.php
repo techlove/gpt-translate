@@ -2,9 +2,11 @@
 
 namespace Rdosgroup\GptTranslate\Console;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Rdosgroup\GptTranslate\OpenaiService;
+
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\spin;
 
 class TranslateLang extends Command
 {
@@ -29,16 +31,11 @@ class TranslateLang extends Command
      */
     public function handle()
     {
-        $this->info('Starting translation at ' . Carbon::now()->toDateTimeString());
-        $this->info('Processing... Please wait.');
-        try {
+
+        spin(function () {
             $service = new OpenaiService();
             $service->translate_file(base_path("lang"), $this->option('origin') ?? "en", $this->option('lang') ?? "sv", $this->option('context') ?? "", $this->option('model') ?? "gpt-3.5-turbo");
-            $this->info("\File translated successfully");
-            $this->info('Translation finished at ' . Carbon::now()->toDateTimeString());
-        } catch (\Throwable $th) {
-            $this->stopSpinner();
-            $this->error($th->getMessage());
-        }
+        }, 'Translating strings to ' . $this->option('lang') ?? 'sv' . '...');
+        info("Strings translated successfully");
     }
 }
