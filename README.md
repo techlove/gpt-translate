@@ -32,6 +32,11 @@ php artisan vendor:publish
 **Environment Configuration**  
 Add the `OPENAI_API_KEY` and `OPENAI_ORGANIZATION` variables to your `.env` file with the details from your OpenAI account.
 
+**Publish the lang Folder**
+If you don't have the lang folder in your directory, you need to publish the lang folder:
+```bash
+php artisan lang:publish
+```
 
 **Fetch All Translatable and Translate**
 As shown, this command extracts all translatable strings into a `lang/en.json`, then translate them using ChatGPT into a new file `lang/sv.json`.
