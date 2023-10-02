@@ -1,9 +1,9 @@
 <?php
 
-namespace Rdosgroup\GptTranslate\Console;
+namespace Techlove\GptTranslate\Console;
 
 use Illuminate\Console\Command;
-use Rdosgroup\GptTranslate\FileService;
+use Techlove\GptTranslate\FileService;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;

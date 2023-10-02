@@ -1,11 +1,11 @@
 <?php
 
-namespace Rdosgroup\GptTranslate;
+namespace Techlove\GptTranslate;
 
 use Illuminate\Support\ServiceProvider;
-use Rdosgroup\GptTranslate\Console\TranslateExtract;
-use Rdosgroup\GptTranslate\Console\TranslateMake;
-use Rdosgroup\GptTranslate\Console\TranslateLang;
+use Techlove\GptTranslate\Console\TranslateExtract;
+use Techlove\GptTranslate\Console\TranslateMake;
+use Techlove\GptTranslate\Console\TranslateLang;
 
 class TranslateProvider extends ServiceProvider
 {

@@ -17,7 +17,7 @@ Add the following to your `config/app.php` file:
 ```php
 'providers' => [
     ...
-    techlove\GptTranslate\TranslateProvider::class,
+    Techlove\GptTranslate\TranslateProvider::class,
     ...
 ],
 ```

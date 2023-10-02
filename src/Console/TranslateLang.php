@@ -1,9 +1,9 @@
 <?php
 
-namespace Rdosgroup\GptTranslate\Console;
+namespace Techlove\GptTranslate\Console;
 
 use Illuminate\Console\Command;
-use Rdosgroup\GptTranslate\OpenaiService;
+use Techlove\GptTranslate\OpenaiService;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;

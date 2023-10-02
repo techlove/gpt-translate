@@ -1,6 +1,6 @@
 <?php
 
-namespace Rdosgroup\GptTranslate\Console;
+namespace Techlove\GptTranslate\Console;
 
 use Illuminate\Console\Command;
 
