@@ -1,6 +1,15 @@
 {
   "name": "techlove/gpt-translate",
   "description": "A Laravel package to create a base translation file, and translate it to any language with ChatGPT API",
+  "keywords": [
+    "techlove",
+    "gpt-translate",
+    "translation",
+    "gpt",
+    "openai",
+    "chatgpt"
+  ],
+  "homepage": "https://github.com/techlove/gpt-translate",
   "type": "laravel-package",
   "license": "MIT",
   "autoload": {
@@ -10,8 +19,9 @@
   },
   "authors": [
     {
-      "name": "Ricardo Guerrero",
-      "email": "richygc@icloud.com"
+      "name": "Jesper Lundberg",
+      "email": "jesper@techlove.se",
+      "role": "Developer"
     }
   ],
   "minimum-stability": "dev",
@@ -22,7 +32,7 @@
     }
   },
   "require": {
-    "php": "^8.0",
+    "php": "^8.2",
     "openai-php/laravel": "^0.6.3",
     "kkomelin/laravel-translatable-string-exporter": "^1.21",
     "laravel/prompts": "^0.1.10"

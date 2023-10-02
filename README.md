@@ -7,7 +7,19 @@ Furthermore, `gpt-translate` enables you to translate your base language file, w
 ## Getting Started
 
 **Installation**  
-   Install the package using composer:
+    Add the following to your `composer.json` file:
+```json
+{
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/techlove/gpt-translate.git"
+        }
+    ]
+}
+```
+
+   Then install the package using composer:
 ```bash
 composer require techlove/gpt-translate
 ```
@@ -33,7 +45,7 @@ php artisan vendor:publish
 Add the `OPENAI_API_KEY` and `OPENAI_ORGANIZATION` variables to your `.env` file with the details from your OpenAI account.
 
 **Publish the lang Folder**
-If you don't have the lang folder in your directory, you need to publish the lang folder:
+If you don't have the `lang` folder in your directory, you need to publish it:
 ```bash
 php artisan lang:publish
 ```
