@@ -1,11 +1,11 @@
 {
-  "name": "rdosgroup/gpt-translate",
+  "name": "techlove/gpt-translate",
   "description": "A Laravel package to create a base translation file, and translate it to any language with ChatGPT API",
   "type": "laravel-package",
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Rdosgroup\\GptTranslate\\": "src/"
+      "Techlove\\GptTranslate\\": "src/"
     }
   },
   "authors": [
@@ -23,6 +23,8 @@
   },
   "require": {
     "php": "^8.0",
-    "openai-php/laravel": "^0.6.3"
+    "openai-php/laravel": "^0.6.3",
+    "kkomelin/laravel-translatable-string-exporter": "^1.21",
+    "laravel/prompts": "^0.1.10"
   }
 }

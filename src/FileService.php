@@ -1,6 +1,6 @@
 <?php
 
-namespace Rdosgroup\GptTranslate;
+namespace Techlove\GptTranslate;
 
 class FileService
 {

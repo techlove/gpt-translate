@@ -1,10 +1,11 @@
 <?php
 
-namespace Rdosgroup\GptTranslate;
+namespace Techlove\GptTranslate;
 
 use Illuminate\Support\ServiceProvider;
-use Rdosgroup\GptTranslate\Console\TranslateMake;
-use Rdosgroup\GptTranslate\Console\TranslateLang;
+use Techlove\GptTranslate\Console\TranslateExtract;
+use Techlove\GptTranslate\Console\TranslateMake;
+use Techlove\GptTranslate\Console\TranslateLang;
 
 class TranslateProvider extends ServiceProvider
 {
@@ -22,15 +23,15 @@ class TranslateProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__.'/../config/openai.php' => config_path('openai.php')], 'config');
+            $this->publishes([__DIR__ . '/../config/openai.php' => config_path('openai.php')], 'config');
         }
 
         if ($this->app->runningInConsole()) {
             $this->commands([
                 TranslateMake::class,
                 TranslateLang::class,
+                TranslateExtract::class,
             ]);
         }
-
     }
 }
