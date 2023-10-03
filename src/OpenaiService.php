@@ -158,7 +158,7 @@ class OpenaiService
                 $str_lang = "english";
                 break;
         }
-        return "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details. Importantly, any word prefixed with the symbol ':' should remain unchanged";
+        return "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details. Importantly, any word prefixed with the symbol ':' should remain unchanged and be kept in $str_origin";
     }
 
     public function sync_vars($str1, $str2)

@@ -43,6 +43,6 @@ class TranslateExtract extends Command
                 '--path' => $this->option('path') ?? base_path('lang')
             ]);
         });
-        info("Strings translated successfully to lang/{$this->option('lang')}.json");
+        info("Strings translated successfully to {$this->option('path')}/{$this->option('lang')}.json");
     }
 }

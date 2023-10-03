@@ -35,7 +35,7 @@ class TranslateLang extends Command
         spin(function () {
             $service = new OpenaiService();
             $service->translate_file($this->option('path') ?? base_path("lang"), $this->option('origin') ?? "en", $this->option('lang') ?? "sv", $this->option('context') ?? "", $this->option('model') ?? "gpt-3.5-turbo");
-        }, 'Translating strings to ' . $this->option('lang') ?? 'sv' . '...');
-        info("Strings translated successfully");
+        }, 'Translating strings...');
+        info("Strings translated successfully!");
     }
 }
