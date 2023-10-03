@@ -158,7 +158,11 @@ class OpenaiService
                 $str_lang = "english";
                 break;
         }
-        return "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details. Importantly, any word prefixed with the symbol ':' should remain unchanged, this goes for any occurancs of the symbol ':' in the text. Even when encapsulated in parentheses, the word following the symbol ':' should remain unchanged. Also when there is a word directly in front of the symbol ':', the following word should remain unchanged.";
+        $description = "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details.";
+        $rule = "Importantly, any word prefixed with the symbol ':' must remain unchanged in the translation.";
+        $rule2 = "For example: If the original text contains the word ':company', the translated text must also contain the word ':company'.";
+        $rule3 = "If the word is encapsulated like: '(:type)', the translated text must also contain the word '(:type)'.";
+        return "$description $rule $rule2 $rule3";
     }
 
     public function sync_vars($str1, $str2)
