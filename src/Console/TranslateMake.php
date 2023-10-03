@@ -15,7 +15,7 @@ class TranslateMake extends Command
      *
      * @var string
      */
-    protected $signature = 'translate:make {--lang=} {--path=}';
+    protected $signature = 'translate:make {--lang=} {--path=resources/lang}';
 
     /**
      * The console command description.

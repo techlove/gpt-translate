@@ -15,7 +15,7 @@ class TranslateLang extends Command
      *
      * @var string
      */
-    protected $signature = 'translate:lang {--origin=} {--lang=} {--context=} {--model=gpt-3.5-turbo} {--path=}';
+    protected $signature = 'translate:lang {--origin=} {--lang=} {--context=} {--model=gpt-3.5-turbo} {--path=resources/lang}';
 
     /**
      * The console command description.

@@ -14,7 +14,7 @@ class TranslateExtract extends Command
      *
      * @var string
      */
-    protected $signature = 'translate:extract {--origin=en} {--lang=sv} {--model=gpt-3.5-turbo} {--path=}';
+    protected $signature = 'translate:extract {--origin=en} {--lang=sv} {--model=gpt-3.5-turbo} {--path=resources/lang}';
 
     /**
      * The console command description.
