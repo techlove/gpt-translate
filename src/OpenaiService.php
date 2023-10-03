@@ -160,18 +160,15 @@ class OpenaiService
         }
 
         $description = "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details.";
-        $rule = "Importantly, any word prefixed with the symbol ':' must remain unchanged in the translation.";
-        $rule2 = "For example: If the original text contains the word ':company', the translated text must also contain the word ':company'.";
-        $rule3 = "If the word is encapsulated like: '(:type)', the translated text must also contain the word '(:type)'.";
-        $rule4 = "Do not make translate abreviations that are prefixed with ':'. For example, if the original text contains the word ':ssn', the translated text must also contain the word ':ssn'.";
-        return "$description $rule $rule2 $rule3 $rule4";
+        $rule = "The translation strings contain variables matching regex /[([]*:(\w+)[)\]]*/xg, Variable names should be kept in $str_origin";
+        return "$description $rule";
     }
 
     public function sync_vars($str1, $str2)
     {
 
         // find all variables with subfix :
-        preg_match_all('/:(\w+)/', $str1, $matches);
+        preg_match_all('/[([]*:(\w+)[)\]]*/', $str1, $matches);
         if ($matches && isset($matches[0])) {
             // for each variable with subfix : found in str1, replace it with the same variable in str2
             foreach ($matches[0] as $match) {
