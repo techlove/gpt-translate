@@ -2,6 +2,7 @@
 
 namespace Techlove\GptTranslate;
 
+use Illuminate\Support\Facades\Log;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class OpenaiService
@@ -14,8 +15,11 @@ class OpenaiService
         $strings = json_decode(file_get_contents($file_origin), true);
         // translate each string
         $translated_strings = [];
-        foreach ($strings as $string) {
-            $translated_strings[$string] = $this->translate_string($string, $origin, $lang, $context, $model);
+        foreach (array_chunk($strings, 20) as $stringsPart) {
+            $result = $this->translate_string($stringsPart, $origin, $lang, $context, $model);
+            foreach ($result as $key => $value) {
+                $translated_strings[$stringsPart[$key]] = $value;
+            }
         }
         // encode translated strings into json
         $json = json_encode($translated_strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
@@ -42,24 +46,30 @@ class OpenaiService
         return file_put_contents($file, $json);
     }
 
-    public function translate_string($string = '', $origin = 'en', $lang = 'sv', $context = '', $model = "gpt-3.5-turbo")
+    public function translate_string($strings = [], $origin = 'en', $lang = 'sv', $context = '', $model = "gpt-3.5-turbo")
     {
         try {
             $result = OpenAI::chat()->create([
                 "model" => $model,
-                "messages" => [["role" => "system", "content" => $this->prompt_system($context)], ["role" => "user", "content" => $this->prompt_header($origin, $lang)], ["role" => "user", "content" => $string]],
+                "messages" => [
+                    ["role" => "system", "content" => $this->prompt_system($context)],
+                    ["role" => "user", "content" => $this->prompt_header($origin, $lang)],
+                    ["role" => "user", "content" => collect($strings)->implode("\n")]
+                ],
                 "temperature" => 0.4,
                 "n" => 1,
             ]);
             // if the result is not empty, return the translated string
             if ($result->choices && count($result->choices) > 0 && $result->choices[0]->message) {
-                $translation = $result->choices[0]->message->content ?? $string;
-                return $this->sync_vars($string, $translation);
+                Log::debug('t', [$result->choices[0]->message->content]);
+                $translations = $result->choices[0]->message->content ?? $strings;
+                return explode("\n", $translations);
             } else {
-                return $string;
+                return $strings;
             }
         } catch (\Throwable $th) {
-            return $string;
+            Log::debug('t', [$th->getMessage()]);
+            return $strings;
         }
     }
 
@@ -158,14 +168,17 @@ class OpenaiService
                 $str_lang = "english";
                 break;
         }
-        return "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details. Importantly, any word prefixed with the symbol ':' should remain unchanged";
+
+        $description = "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details.";
+        $rule = "The translation strings contain variables matching PCRE2 regex /[([]*:(\w+)[)\]]*/xg - Variable names should be kept in $str_origin.";
+        return "$description $rule";
     }
 
     public function sync_vars($str1, $str2)
     {
 
         // find all variables with subfix :
-        preg_match_all('/:(\w+)/', $str1, $matches);
+        preg_match_all('/[([]*:(\w+)[)\]]*/', $str1, $matches);
         if ($matches && isset($matches[0])) {
             // for each variable with subfix : found in str1, replace it with the same variable in str2
             foreach ($matches[0] as $match) {
