@@ -158,11 +158,13 @@ class OpenaiService
                 $str_lang = "english";
                 break;
         }
+
         $description = "Translate the following text from $str_origin to $str_lang, ensuring you return only the translated content without added quotes or any other extraneous details.";
         $rule = "Importantly, any word prefixed with the symbol ':' must remain unchanged in the translation.";
         $rule2 = "For example: If the original text contains the word ':company', the translated text must also contain the word ':company'.";
         $rule3 = "If the word is encapsulated like: '(:type)', the translated text must also contain the word '(:type)'.";
-        return "$description $rule $rule2 $rule3";
+        $rule4 = "Do not make translate abreviations that are prefixed with ':'. For example, if the original text contains the word ':ssn', the translated text must also contain the word ':ssn'.";
+        return "$description $rule $rule2 $rule3 $rule4";
     }
 
     public function sync_vars($str1, $str2)
