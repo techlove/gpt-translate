@@ -14,8 +14,9 @@ class OpenaiService
         $strings = json_decode(file_get_contents($file_origin), true);
         // translate each string
         $translated_strings = [];
-        foreach ($strings as $string) {
-            $translated_strings[$string] = $this->translate_string($string, $origin, $lang, $context, $model);
+        foreach (array_chunk($strings, 10) as $stringsPart) {
+            $result = $this->translate_string($string, $origin, $lang, $context, $model);
+            $translated_strings = array_merge($translated_strings, $result);
         }
         // encode translated strings into json
         $json = json_encode($translated_strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
@@ -42,19 +43,23 @@ class OpenaiService
         return file_put_contents($file, $json);
     }
 
-    public function translate_string($string = '', $origin = 'en', $lang = 'sv', $context = '', $model = "gpt-3.5-turbo")
+    public function translate_string($strings = [], $origin = 'en', $lang = 'sv', $context = '', $model = "gpt-3.5-turbo")
     {
         try {
             $result = OpenAI::chat()->create([
                 "model" => $model,
-                "messages" => [["role" => "system", "content" => $this->prompt_system($context)], ["role" => "user", "content" => $this->prompt_header($origin, $lang)], ["role" => "user", "content" => $string]],
+                "messages" => [
+                    ["role" => "system", "content" => $this->prompt_system($context)],
+                    ["role" => "user", "content" => $this->prompt_header($origin, $lang)],
+                    ["role" => "user", "content" => collect($strings)->implode("\n")]
+                ],
                 "temperature" => 0.4,
                 "n" => 1,
             ]);
             // if the result is not empty, return the translated string
             if ($result->choices && count($result->choices) > 0 && $result->choices[0]->message) {
-                $translation = $result->choices[0]->message->content ?? $string;
-                return $this->sync_vars($string, $translation);
+                $translations = $result->choices[0]->message->content ?? $string;
+                return str($translations)->split("\n")->toArray()
             } else {
                 return $string;
             }
