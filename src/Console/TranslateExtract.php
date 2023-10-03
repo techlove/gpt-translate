@@ -14,7 +14,7 @@ class TranslateExtract extends Command
      *
      * @var string
      */
-    protected $signature = 'translate:extract {--origin=en} {--lang=sv} {--model=gpt-3.5-turbo}';
+    protected $signature = 'translate:extract {--origin=en} {--lang=sv} {--model=gpt-3.5-turbo} {--path=}';
 
     /**
      * The console command description.
@@ -31,14 +31,16 @@ class TranslateExtract extends Command
     public function handle()
     {
         spin(function () {
-            $this->call('translatable:export', [
-                'lang' => $this->option('origin'),
+            $this->call('translate:make', [
+                '--lang' => $this->option('origin'),
+                '--path' => $this->option('path') ?? base_path('lang')
             ]);
 
             $this->call("translate:lang", [
                 '--origin' => $this->option('origin'),
                 '--lang' => $this->option('lang'),
                 '--model' => $this->option('model'),
+                '--path' => $this->option('path') ?? base_path('lang')
             ]);
         });
         info("Strings translated successfully to lang/{$this->option('lang')}.json");

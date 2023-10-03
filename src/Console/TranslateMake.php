@@ -15,7 +15,7 @@ class TranslateMake extends Command
      *
      * @var string
      */
-    protected $signature = 'translate:make {--lang=}';
+    protected $signature = 'translate:make {--lang=} {--path=}';
 
     /**
      * The console command description.
@@ -34,7 +34,7 @@ class TranslateMake extends Command
 
         spin(function () {
             $service = new FileService();
-            $service->strings_file($this->option('lang') ?? "en", base_path("lang"));
+            $service->strings_file($this->option('lang') ?? "en", $this->option('path') ?? base_path("lang"));
         }, "Creating {$this->option('lang')}.json file in lang/ directory...");
         info("File created successfully");
     }

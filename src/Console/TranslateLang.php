@@ -15,7 +15,7 @@ class TranslateLang extends Command
      *
      * @var string
      */
-    protected $signature = 'translate:lang {--origin=} {--lang=} {--context=} {--model=gpt-3.5-turbo}';
+    protected $signature = 'translate:lang {--origin=} {--lang=} {--context=} {--model=gpt-3.5-turbo} {--path=}';
 
     /**
      * The console command description.
@@ -34,7 +34,7 @@ class TranslateLang extends Command
 
         spin(function () {
             $service = new OpenaiService();
-            $service->translate_file(base_path("lang"), $this->option('origin') ?? "en", $this->option('lang') ?? "sv", $this->option('context') ?? "", $this->option('model') ?? "gpt-3.5-turbo");
+            $service->translate_file($this->option('path') ?? base_path("lang"), $this->option('origin') ?? "en", $this->option('lang') ?? "sv", $this->option('context') ?? "", $this->option('model') ?? "gpt-3.5-turbo");
         }, 'Translating strings to ' . $this->option('lang') ?? 'sv' . '...');
         info("Strings translated successfully");
     }
