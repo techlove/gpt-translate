@@ -21,7 +21,7 @@ Furthermore, `gpt-translate` enables you to translate your base language file, w
 
    Then install the package using composer:
 ```bash
-composer require techlove/gpt-translate *
+composer require techlove/gpt-translate
 ```
 
 **Add Service Provider**
