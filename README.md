@@ -11,7 +11,7 @@ Furthermore, `gpt-translate` enables you to translate your base language file, w
 ```json
 {
     "repositories": [
-        {
+        "gpt-translate": {
             "type": "git",
             "url": "https://github.com/techlove/gpt-translate.git"
         }
