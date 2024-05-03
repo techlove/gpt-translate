@@ -21,7 +21,7 @@ class TranslateExtract extends Command
      *
      * @var string
      */
-    protected $description = 'Get all Translatable stringa and translate to a given language into a .json file';
+    protected $description = 'Get all Translatable strings and translate to a given language into a .json file';
 
     /**
      * Execute the console command.
