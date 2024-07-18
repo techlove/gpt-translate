@@ -33,7 +33,7 @@
   },
   "require": {
     "php": "^8.2",
-    "openai-php/laravel": "^0.6.3",
-    "laravel/prompts": "~0.1"
+    "openai-php/laravel": "^0.10.1",
+    "laravel/prompts": "~0.1.24"
   }
 }
