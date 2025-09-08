@@ -35,8 +35,7 @@ class TranslateLang extends Command
         spin(function () {
             $context = $this->option('context') ?? config('gpt-translate.default_context', '');
             $model = $this->option('model') ?? 'gpt-4o';
-            $exclude = $this->option('exclude') ? array_filter(explode(',', $this->option('exclude'))) :
-                      (config('gpt-translate.exclude_words') ? array_filter(explode(',', config('gpt-translate.exclude_words'))) : []);
+            $exclude = $this->getExcludedWords();
 
             if (! empty($exclude)) {
                 $excludeText = "IMPORTANT: Never translate the following words or phrases: '".implode("', '", $exclude)."'. These should always remain in their original form.";
@@ -53,5 +52,25 @@ class TranslateLang extends Command
             );
         }, 'Translating strings...');
         info('Strings translated successfully!');
+    }
+
+    /**
+     * Get the excluded words from command option or configuration.
+     */
+    private function getExcludedWords(): array
+    {
+        // Check if exclude option was provided via command line
+        if ($this->option('exclude')) {
+            return array_filter(explode(',', $this->option('exclude')));
+        }
+
+        // Fall back to configuration file setting
+        $configExclude = config('gpt-translate.exclude_words');
+        if ($configExclude) {
+            return array_filter(explode(',', $configExclude));
+        }
+
+        // Return empty array if no excluded words configured
+        return [];
     }
 }
