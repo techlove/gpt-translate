@@ -59,18 +59,28 @@ class TranslateLang extends Command
      */
     private function getExcludedWords(): array
     {
+        $rawWords = [];
+        
         // Check if exclude option was provided via command line
         if ($this->option('exclude')) {
-            return array_filter(explode(',', $this->option('exclude')));
+            $rawWords = explode(',', $this->option('exclude'));
+        } elseif (config('gpt-translate.exclude_words')) {
+            // Fall back to configuration file setting
+            $rawWords = explode(',', config('gpt-translate.exclude_words'));
         }
 
-        // Fall back to configuration file setting
-        $configExclude = config('gpt-translate.exclude_words');
-        if ($configExclude) {
-            return array_filter(explode(',', $configExclude));
-        }
-
-        // Return empty array if no excluded words configured
-        return [];
+        // Sanitize and filter the words
+        return array_values(array_filter(array_map(function ($word) {
+            // Trim whitespace
+            $word = trim($word);
+            // Sanitize: only allow alphanumeric characters, spaces, hyphens, and underscores
+            $word = preg_replace('/[^a-zA-Z0-9\s\-_]/', '', $word);
+            // Remove extra spaces
+            $word = preg_replace('/\s+/', ' ', $word);
+            return trim($word);
+        }, $rawWords), function ($word) {
+            // Filter out empty strings
+            return !empty($word);
+        }));
     }
 }

@@ -48,12 +48,17 @@ For older versions of Laravel, manually add the service provider to your `config
 
 **Publish the Configuration Files**  
 You need to publish the configuration files:
+
 ```bash
+# First, publish the OpenAI configuration (if not already done)
+php artisan vendor:publish --provider="OpenAI\Laravel\ServiceProvider"
+
+# Then, publish the GPT-Translate specific configuration
 php artisan vendor:publish --provider="Techlove\GptTranslate\TranslateProvider"
 ```
 
-This will publish two configuration files:
-- `config/openai.php` - OpenAI API configuration
+This will publish:
+- `config/openai.php` - OpenAI API configuration (from the OpenAI Laravel package)
 - `config/gpt-translate.php` - GPT-Translate specific settings
 
 **Environment Configuration**  

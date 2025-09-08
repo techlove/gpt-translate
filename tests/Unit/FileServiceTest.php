@@ -4,13 +4,13 @@ use Techlove\GptTranslate\FileService;
 
 describe('FileService', function () {
     it('creates a file service instance', function () {
-        $service = new FileService;
+        $service = new FileService();
 
         expect($service)->toBeInstanceOf(FileService::class);
     });
 
     it('can extract translation patterns from content', function () {
-        $service = new FileService;
+        $service = new FileService();
 
         // Create a temporary file with translation strings
         $testContent = '<?php echo __("Hello World"); echo trans("Another string"); ?>';

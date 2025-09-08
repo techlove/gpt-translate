@@ -4,7 +4,7 @@ use Techlove\GptTranslate\OpenaiService;
 
 describe('OpenaiService', function () {
     it('throws exception when source file does not exist', function () {
-        $service = new OpenaiService;
+        $service = new OpenaiService();
         $nonexistentPath = '/nonexistent/path';
         $expectedFile = $nonexistentPath.'/en.json';
 
@@ -19,7 +19,7 @@ describe('OpenaiService', function () {
         $tempFile = $tempDir.'/en.json';
         file_put_contents($tempFile, 'invalid json content');
 
-        $service = new OpenaiService;
+        $service = new OpenaiService();
 
         expect(fn () => $service->translate_file($tempDir, 'en', 'sv'))
             ->toThrow(\InvalidArgumentException::class, "Invalid JSON in source translation file: {$tempFile}. Error:");
@@ -30,7 +30,7 @@ describe('OpenaiService', function () {
 
     it('validates JSON format correctly without file operations', function () {
         // Test that we can at least instantiate the service
-        $service = new OpenaiService;
+        $service = new OpenaiService();
         expect($service)->toBeInstanceOf(OpenaiService::class);
 
         // The error handling paths are already tested above
