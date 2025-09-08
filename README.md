@@ -46,20 +46,34 @@ For older versions of Laravel, manually add the service provider to your `config
 ```
 
 
-**Publish the Configuration File**  
-You need to publish the `openai.php` configuration file:
+**Publish the Configuration Files**  
+You need to publish the configuration files:
 ```bash
-php artisan vendor:publish
+php artisan vendor:publish --provider="Techlove\GptTranslate\TranslateProvider"
 ```
 
+This will publish two configuration files:
+- `config/openai.php` - OpenAI API configuration
+- `config/gpt-translate.php` - GPT-Translate specific settings
+
 **Environment Configuration**  
-Add the `OPENAI_API_KEY` and `OPENAI_ORGANIZATION` variables to your `.env` file with the details from your OpenAI account.
+Add the following variables to your `.env` file:
+
+```env
+# OpenAI Configuration (Required)
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_ORGANIZATION=your-organization-id
+
+# GPT-Translate Configuration (Optional)
+GPT_TRANSLATE_DEFAULT_CONTEXT="Your application context here"
+GPT_TRANSLATE_EXCLUDE_WORDS="AppName,BrandName,TechTerms"
+```
 
 **Fetch All Translatable and Translate**
-As shown, this command extracts all translatable strings into a `lang/en.json`, then translate them using ChatGPT into a new file `lang/sv.json`.
-These values are used as default and can therefor be left out of the command:
+This command extracts all translatable strings into a `lang/en.json`, then translates them using ChatGPT into a new file `lang/sv.json`.
+Default values can be omitted from the command:
 ```bash
-php aritsan translate:extract --origin=en --lang=sv --model=gpt-3.5-turbo --path=resources/lang
+php artisan translate:extract --origin=en --lang=sv --model=gpt-4o --path=resources/lang
 ```
 
 **Generate Base Translation File**  
@@ -87,10 +101,18 @@ php artisan translate:lang --origin=en --lang=sv --context="a pet product sales 
 ```
 
 
-**Specify the Model (Optional)**  
-By default, the package uses GPT-3.5. If desired, specify any other OpenAI model compatible with the Chat API:
+**Exclude Words from Translation**  
+Prevent specific words or phrases from being translated by using the `--exclude` option:
 ```bash
-php artisan translate:lang --origin=en --lang=sv --model=gpt-4 --path=resources/lang
+php artisan translate:lang --origin=en --lang=sv --exclude="AppName,BrandName,API" --path=resources/lang
+```
+
+You can also set excluded words in your environment or config file for all translations.
+
+**Specify the Model (Optional)**  
+By default, the package uses GPT-4o. If desired, specify any other OpenAI model compatible with the Chat API:
+```bash
+php artisan translate:lang --origin=en --lang=sv --model=gpt-4-turbo --path=resources/lang
 ```
 
 
@@ -112,10 +134,15 @@ composer run test-coverage # Run tests with coverage
 
 ## Changelog
 
-### v2.0.0 - Laravel 12 Support
+### v2.0.0 - Laravel 12 Support & Upstream Features
 - ✅ Added support for Laravel 12.x
 - ✅ Maintained backward compatibility with Laravel 10.x and 11.x
 - ✅ Updated to latest OpenAI PHP client (v0.16.0)
+- ✅ **NEW**: Changed default model to GPT-4o for better translations
+- ✅ **NEW**: Added excluded words functionality
+- ✅ **NEW**: Added `gpt-translate.php` configuration file
+- ✅ **NEW**: Support for default context via environment variables
+- ✅ Improved JSON encoding with proper Unicode support
 - ✅ Added Laravel Pint for code formatting
 - ✅ Added Pest testing framework
 - ✅ Improved service provider auto-discovery

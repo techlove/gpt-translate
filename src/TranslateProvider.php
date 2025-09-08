@@ -23,7 +23,10 @@ class TranslateProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__.'/../config/openai.php' => config_path('openai.php')], 'config');
+            $this->publishes([
+                __DIR__.'/../config/openai.php' => config_path('openai.php'),
+                __DIR__.'/../config/gpt-translate.php' => config_path('gpt-translate.php'),
+            ], 'config');
         }
 
         if ($this->app->runningInConsole()) {

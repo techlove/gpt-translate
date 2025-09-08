@@ -7,7 +7,7 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class OpenaiService
 {
-    public function translate_file($path = '.', $origin = 'en', $lang = 'sv', $context = '', $model = 'gpt-3.5-turbo')
+    public function translate_file($path = '.', $origin = 'en', $lang = 'sv', $context = '', $model = 'gpt-4o')
     {
         // get file from original content
         $file_origin = $path."/$origin.json";
@@ -22,7 +22,7 @@ class OpenaiService
             }
         }
         // encode translated strings into json
-        $json = json_encode($translated_strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $json = json_encode($translated_strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         // define file path
         $file = $path."/$lang.json";
         // if file path does not exist, create it
@@ -40,14 +40,14 @@ class OpenaiService
             $old_strings = json_decode(file_get_contents($file), true);
             $new_strings = array_diff($translated_strings, $old_strings);
             $translated_strings = array_merge($old_strings, $new_strings);
-            $json = json_encode($translated_strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $json = json_encode($translated_strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
 
         // save file
         return file_put_contents($file, $json);
     }
 
-    public function translate_string($strings = [], $origin = 'en', $lang = 'sv', $context = '', $model = 'gpt-3.5-turbo')
+    public function translate_string($strings = [], $origin = 'en', $lang = 'sv', $context = '', $model = 'gpt-4o')
     {
         try {
             $result = OpenAI::chat()->create([
