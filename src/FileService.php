@@ -7,15 +7,15 @@ class FileService
     /**
      * Save array of strings into a file with json format on a given path
      */
-    public function strings_file($lang = "en", $path = ".")
+    public function strings_file(string $lang = 'en', string $path = '.'): int|false
     {
         $strings_array = $this->strings_keys();
-        $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $file = $path . "/$lang.json";
+        $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $file = $path."/$lang.json";
         // if file path does not exist, create it
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             // verify if directory exists
-            if (!file_exists(dirname($file))) {
+            if (! file_exists(dirname($file))) {
                 // if directory does not exist, create it
                 mkdir(dirname($file), 0777, true);
             } else {
@@ -27,16 +27,16 @@ class FileService
             $old_strings = json_decode(file_get_contents($file), true);
             $new_strings = array_diff($strings_array, $old_strings);
             $strings_array = array_merge($old_strings, $new_strings);
-            $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
+
         return file_put_contents($file, $json);
     }
-
 
     /**
      * Generate key value array from strings
      */
-    public function strings_keys()
+    public function strings_keys(): array
     {
         $strings = $this->get_strings();
         // the format mus be string => string
@@ -44,13 +44,14 @@ class FileService
         foreach ($strings as $string) {
             $keys[$string] = $string;
         }
+
         return $keys;
     }
 
     /**
      * Get all translation strings from all files
      */
-    public function get_strings()
+    public function get_strings(): array
     {
         $files = $this->get_files();
         $strings = [];
@@ -59,7 +60,7 @@ class FileService
         }
         // remove empty strings
         $strings = array_filter($strings, function ($string) {
-            return !empty($string);
+            return ! empty($string);
         });
         // remove "\" sacapes like "\'"
         $strings = array_map(function ($string) {
@@ -69,6 +70,7 @@ class FileService
         $strings = array_unique($strings);
         // sort strings
         sort($strings);
+
         // return all strings
         return $strings;
     }
@@ -79,8 +81,8 @@ class FileService
     public function get_strings_in_file($file)
     {
         $content = file_get_contents($file);
-        $content = str_replace("\n", "", $content);
-        $content = str_replace("\r", "", $content);
+        $content = str_replace("\n", '', $content);
+        $content = str_replace("\r", '', $content);
         // regular expression to find all __(), @lang(), $t() and trans() calls
         $patterns = [
             '/__\(\s*\"(.*?)\"[^)]*\)/s',
@@ -94,7 +96,7 @@ class FileService
             '/(?<!\$)(?<!\.)t\(\s*\"(.*?)\"[^)]*\)/s',
             "/(?<!\$)(?<!\.)t\(\s*'((?:[^']|\\')*?)'\s*(?:,|\))/s",
             '/i18n\.t\(\s*\"(.*?)\"[^)]*\)/s',
-            "/i18n\.t\(\s*'((?:[^']|\\')*?)'\s*(?:,|\))/s"
+            "/i18n\.t\(\s*'((?:[^']|\\')*?)'\s*(?:,|\))/s",
         ];
         $matches = [];
         // go through each pattern
@@ -105,6 +107,7 @@ class FileService
                 $matches[] = $match[1];
             }
         }
+
         // return all translate lines
         return $matches;
     }
@@ -117,6 +120,7 @@ class FileService
         $files = [];
         $files = array_merge($files, $this->get_files_in_directory(app_path()));
         $files = array_merge($files, $this->get_files_in_directory(resource_path()));
+
         return $files;
     }
 
@@ -126,28 +130,45 @@ class FileService
     public function get_files_in_directory($directory)
     {
         $files = [];
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "php"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "vue"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "js"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "ts"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "tsx"));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'php'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'vue'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'js'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'ts'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'tsx'));
+
         return $files;
     }
 
     /**
      * List all files in a directory by extension
      */
-    public function get_files_in_directory_by_extension($directory, $extension)
+    public function get_files_in_directory_by_extension(string $directory, string $extension): array
     {
         $files = [];
+
+        // Check if directory exists and is readable
+        if (! is_dir($directory)) {
+            return $files; // Return empty array if directory doesn't exist
+        }
+
+        if (! is_readable($directory)) {
+            return $files; // Return empty array if directory is not readable
+        }
+
         // check if extension starts with a dot
         $extension = ltrim($extension, '.');
-        // create new recursive directory iterator
-        $dir = new \RecursiveDirectoryIterator($directory);
-        $ite = new \RecursiveIteratorIterator($dir);
+
+        try {
+            // create new recursive directory iterator
+            $dir = new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS);
+            $ite = new \RecursiveIteratorIterator($dir);
+        } catch (\UnexpectedValueException $e) {
+            // Handle permission errors or other directory access issues
+            return $files;
+        }
         // go through each file in directory
         foreach ($ite as $file_info) {
-            if (!$file_info->isDir()) {
+            if (! $file_info->isDir()) {
                 $file_name = $file_info->getFilename();
                 $ext = pathinfo($file_name, PATHINFO_EXTENSION);
                 if ($ext == $extension) {
@@ -155,6 +176,7 @@ class FileService
                 }
             }
         }
+
         // return all files
         return $files;
     }

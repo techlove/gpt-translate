@@ -3,10 +3,11 @@
 namespace Techlove\GptTranslate\Console;
 
 use Illuminate\Console\Command;
-use Techlove\GptTranslate\FileService;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
+
+use Techlove\GptTranslate\FileService;
 
 class TranslateMake extends Command
 {
@@ -33,9 +34,9 @@ class TranslateMake extends Command
     {
 
         spin(function () {
-            $service = new FileService();
-            $service->strings_file($this->option('lang') ?? "en", $this->option('path') ?? base_path("lang"));
+            $service = new FileService;
+            $service->strings_file($this->option('lang') ?? 'en', $this->option('path') ?? base_path('lang'));
         }, "Creating {$this->option('lang')}.json file in {$this->option('path')} directory...");
-        info("File created successfully!");
+        info('File created successfully!');
     }
 }

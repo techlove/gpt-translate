@@ -1,1 +1,24 @@
-vendor
+# Composer
+vendor/
+
+# IDE files
+.idea/
+.vscode/
+
+# Testing
+.phpunit.cache/
+coverage/
+
+# Laravel
+.env
+.env.backup
+.env.production
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
