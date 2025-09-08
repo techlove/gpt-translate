@@ -11,8 +11,22 @@ class OpenaiService
     {
         // get file from original content
         $file_origin = $path."/$origin.json";
+
+        // Check if source file exists
+        if (! file_exists($file_origin)) {
+            throw new \InvalidArgumentException("Source translation file not found: {$file_origin}");
+        }
+
         // decode json file into array
-        $strings = json_decode(file_get_contents($file_origin), true);
+        $fileContents = file_get_contents($file_origin);
+        if ($fileContents === false) {
+            throw new \RuntimeException("Unable to read source translation file: {$file_origin}");
+        }
+
+        $strings = json_decode($fileContents, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException("Invalid JSON in source translation file: {$file_origin}. Error: ".json_last_error_msg());
+        }
         // translate each string
         $translated_strings = [];
         foreach (array_chunk($strings, 20) as $stringsPart) {

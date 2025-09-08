@@ -7,7 +7,7 @@ class FileService
     /**
      * Save array of strings into a file with json format on a given path
      */
-    public function strings_file($lang = 'en', $path = '.')
+    public function strings_file(string $lang = 'en', string $path = '.'): int|false
     {
         $strings_array = $this->strings_keys();
         $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -36,7 +36,7 @@ class FileService
     /**
      * Generate key value array from strings
      */
-    public function strings_keys()
+    public function strings_keys(): array
     {
         $strings = $this->get_strings();
         // the format mus be string => string
@@ -51,7 +51,7 @@ class FileService
     /**
      * Get all translation strings from all files
      */
-    public function get_strings()
+    public function get_strings(): array
     {
         $files = $this->get_files();
         $strings = [];
@@ -142,14 +142,30 @@ class FileService
     /**
      * List all files in a directory by extension
      */
-    public function get_files_in_directory_by_extension($directory, $extension)
+    public function get_files_in_directory_by_extension(string $directory, string $extension): array
     {
         $files = [];
+
+        // Check if directory exists and is readable
+        if (! is_dir($directory)) {
+            return $files; // Return empty array if directory doesn't exist
+        }
+
+        if (! is_readable($directory)) {
+            return $files; // Return empty array if directory is not readable
+        }
+
         // check if extension starts with a dot
         $extension = ltrim($extension, '.');
-        // create new recursive directory iterator
-        $dir = new \RecursiveDirectoryIterator($directory);
-        $ite = new \RecursiveIteratorIterator($dir);
+
+        try {
+            // create new recursive directory iterator
+            $dir = new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS);
+            $ite = new \RecursiveIteratorIterator($dir);
+        } catch (\UnexpectedValueException $e) {
+            // Handle permission errors or other directory access issues
+            return $files;
+        }
         // go through each file in directory
         foreach ($ite as $file_info) {
             if (! $file_info->isDir()) {
