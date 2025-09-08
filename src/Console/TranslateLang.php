@@ -35,8 +35,8 @@ class TranslateLang extends Command
         spin(function () {
             $context = $this->option('context') ?? config('gpt-translate.default_context', '');
             $model = $this->option('model') ?? 'gpt-4o';
-            $exclude = $this->option('exclude') ? explode(',', $this->option('exclude')) :
-                      (config('gpt-translate.exclude_words') ? explode(',', config('gpt-translate.exclude_words')) : []);
+            $exclude = $this->option('exclude') ? array_filter(explode(',', $this->option('exclude'))) :
+                      (config('gpt-translate.exclude_words') ? array_filter(explode(',', config('gpt-translate.exclude_words'))) : []);
 
             if (! empty($exclude)) {
                 $excludeText = "IMPORTANT: Never translate the following words or phrases: '".implode("', '", $exclude)."'. These should always remain in their original form.";
