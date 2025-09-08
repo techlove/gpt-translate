@@ -4,6 +4,15 @@
 
 Furthermore, `gpt-translate` enables you to translate your base language file, whether you previously had it or generated it using the package, to other languages using the ChatGPT API. Supported languages for translation include English, Swedish, Danish, Norwegian, Finish, Dutch, Polish, Spanish, French, German, Italian, and Portuguese.
 
+## Laravel Version Compatibility
+
+This package supports multiple Laravel versions:
+- **Laravel 10.x** (PHP ^8.2)
+- **Laravel 11.x** (PHP ^8.2)  
+- **Laravel 12.x** (PHP ^8.2)
+
+The package automatically adapts to your Laravel version and provides full compatibility across all supported versions.
+
 ## Getting Started
 
 **Installation**  
@@ -24,8 +33,10 @@ Furthermore, `gpt-translate` enables you to translate your base language file, w
 composer require techlove/gpt-translate
 ```
 
-**Add Service Provider**
-Add the following to your `config/app.php` file:
+**Service Provider Auto-Discovery**
+Laravel 5.5+ supports package auto-discovery. The service provider will be automatically registered. 
+
+For older versions of Laravel, manually add the service provider to your `config/app.php` file:
 ```php
 'providers' => [
     ...
@@ -83,6 +94,33 @@ php artisan translate:lang --origin=en --lang=sv --model=gpt-4 --path=resources/
 ```
 
 
+## Development
+
+This package includes development tools for maintaining code quality:
+
+### Code Formatting
+```bash
+composer run format        # Format code with Laravel Pint
+composer run format-test   # Check formatting without making changes
+```
+
+### Testing
+```bash
+composer run test          # Run tests with Pest
+composer run test-coverage # Run tests with coverage
+```
+
+## Changelog
+
+### v2.0.0 - Laravel 12 Support
+- ✅ Added support for Laravel 12.x
+- ✅ Maintained backward compatibility with Laravel 10.x and 11.x
+- ✅ Updated to latest OpenAI PHP client (v0.16.0)
+- ✅ Added Laravel Pint for code formatting
+- ✅ Added Pest testing framework
+- ✅ Improved service provider auto-discovery
+- ✅ Enhanced code quality and type safety
+
 ## Conclusion
 
-Leverage the power of ChatGPT and the flexibility of `gpt-translate` to localize your Laravel application effectively and efficiently.
+Leverage the power of ChatGPT and the flexibility of `gpt-translate` to localize your Laravel application effectively and efficiently across Laravel 10, 11, and 12.

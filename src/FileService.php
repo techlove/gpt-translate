@@ -7,15 +7,15 @@ class FileService
     /**
      * Save array of strings into a file with json format on a given path
      */
-    public function strings_file($lang = "en", $path = ".")
+    public function strings_file($lang = 'en', $path = '.')
     {
         $strings_array = $this->strings_keys();
         $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $file = $path . "/$lang.json";
+        $file = $path."/$lang.json";
         // if file path does not exist, create it
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             // verify if directory exists
-            if (!file_exists(dirname($file))) {
+            if (! file_exists(dirname($file))) {
                 // if directory does not exist, create it
                 mkdir(dirname($file), 0777, true);
             } else {
@@ -29,9 +29,9 @@ class FileService
             $strings_array = array_merge($old_strings, $new_strings);
             $json = json_encode($strings_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         }
+
         return file_put_contents($file, $json);
     }
-
 
     /**
      * Generate key value array from strings
@@ -44,6 +44,7 @@ class FileService
         foreach ($strings as $string) {
             $keys[$string] = $string;
         }
+
         return $keys;
     }
 
@@ -59,7 +60,7 @@ class FileService
         }
         // remove empty strings
         $strings = array_filter($strings, function ($string) {
-            return !empty($string);
+            return ! empty($string);
         });
         // remove "\" sacapes like "\'"
         $strings = array_map(function ($string) {
@@ -69,6 +70,7 @@ class FileService
         $strings = array_unique($strings);
         // sort strings
         sort($strings);
+
         // return all strings
         return $strings;
     }
@@ -79,8 +81,8 @@ class FileService
     public function get_strings_in_file($file)
     {
         $content = file_get_contents($file);
-        $content = str_replace("\n", "", $content);
-        $content = str_replace("\r", "", $content);
+        $content = str_replace("\n", '', $content);
+        $content = str_replace("\r", '', $content);
         // regular expression to find all __(), @lang(), $t() and trans() calls
         $patterns = [
             '/__\(\s*\"(.*?)\"[^)]*\)/s',
@@ -94,7 +96,7 @@ class FileService
             '/(?<!\$)(?<!\.)t\(\s*\"(.*?)\"[^)]*\)/s',
             "/(?<!\$)(?<!\.)t\(\s*'((?:[^']|\\')*?)'\s*(?:,|\))/s",
             '/i18n\.t\(\s*\"(.*?)\"[^)]*\)/s',
-            "/i18n\.t\(\s*'((?:[^']|\\')*?)'\s*(?:,|\))/s"
+            "/i18n\.t\(\s*'((?:[^']|\\')*?)'\s*(?:,|\))/s",
         ];
         $matches = [];
         // go through each pattern
@@ -105,6 +107,7 @@ class FileService
                 $matches[] = $match[1];
             }
         }
+
         // return all translate lines
         return $matches;
     }
@@ -117,6 +120,7 @@ class FileService
         $files = [];
         $files = array_merge($files, $this->get_files_in_directory(app_path()));
         $files = array_merge($files, $this->get_files_in_directory(resource_path()));
+
         return $files;
     }
 
@@ -126,11 +130,12 @@ class FileService
     public function get_files_in_directory($directory)
     {
         $files = [];
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "php"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "vue"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "js"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "ts"));
-        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, "tsx"));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'php'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'vue'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'js'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'ts'));
+        $files = array_merge($files, $this->get_files_in_directory_by_extension($directory, 'tsx'));
+
         return $files;
     }
 
@@ -147,7 +152,7 @@ class FileService
         $ite = new \RecursiveIteratorIterator($dir);
         // go through each file in directory
         foreach ($ite as $file_info) {
-            if (!$file_info->isDir()) {
+            if (! $file_info->isDir()) {
                 $file_name = $file_info->getFilename();
                 $ext = pathinfo($file_name, PATHINFO_EXTENSION);
                 if ($ext == $extension) {
@@ -155,6 +160,7 @@ class FileService
                 }
             }
         }
+
         // return all files
         return $files;
     }

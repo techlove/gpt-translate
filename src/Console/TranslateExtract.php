@@ -33,14 +33,14 @@ class TranslateExtract extends Command
         spin(function () {
             $this->call('translate:make', [
                 '--lang' => $this->option('origin'),
-                '--path' => $this->option('path') ?? base_path('lang')
+                '--path' => $this->option('path') ?? base_path('lang'),
             ]);
 
-            $this->call("translate:lang", [
+            $this->call('translate:lang', [
                 '--origin' => $this->option('origin'),
                 '--lang' => $this->option('lang'),
                 '--model' => $this->option('model'),
-                '--path' => $this->option('path') ?? base_path('lang')
+                '--path' => $this->option('path') ?? base_path('lang'),
             ]);
         });
         info("Strings translated successfully to {$this->option('path')}/{$this->option('lang')}.json");

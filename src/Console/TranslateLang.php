@@ -3,10 +3,11 @@
 namespace Techlove\GptTranslate\Console;
 
 use Illuminate\Console\Command;
-use Techlove\GptTranslate\OpenaiService;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
+
+use Techlove\GptTranslate\OpenaiService;
 
 class TranslateLang extends Command
 {
@@ -33,9 +34,9 @@ class TranslateLang extends Command
     {
 
         spin(function () {
-            $service = new OpenaiService();
-            $service->translate_file($this->option('path') ?? base_path("lang"), $this->option('origin') ?? "en", $this->option('lang') ?? "sv", $this->option('context') ?? "", $this->option('model') ?? "gpt-3.5-turbo");
+            $service = new OpenaiService;
+            $service->translate_file($this->option('path') ?? base_path('lang'), $this->option('origin') ?? 'en', $this->option('lang') ?? 'sv', $this->option('context') ?? '', $this->option('model') ?? 'gpt-3.5-turbo');
         }, 'Translating strings...');
-        info("Strings translated successfully!");
+        info('Strings translated successfully!');
     }
 }
